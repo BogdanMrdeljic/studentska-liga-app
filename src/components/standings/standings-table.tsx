@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { TeamLogo } from "@/components/teams/team-logo";
 import {
   Table,
   TableBody,
@@ -44,9 +45,12 @@ export function StandingsTable({
               <TableCell className="font-medium text-muted-foreground">{index + 1}</TableCell>
               <TableCell>
                 <Link href={`/ekipe/${row.teamId}`} className="flex items-center gap-2 font-medium hover:underline">
-                  <span
-                    className="size-3 shrink-0 rounded-full"
-                    style={{ backgroundColor: row.colorPrimary }}
+                  <TeamLogo
+                    logoUrl={row.logoUrl}
+                    name={row.teamName}
+                    colorPrimary={row.colorPrimary}
+                    colorSecondary={row.colorSecondary}
+                    size={24}
                   />
                   {row.teamName}
                 </Link>

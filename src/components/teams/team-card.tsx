@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
+import { TeamLogo } from "@/components/teams/team-logo";
 
 type TeamCardProps = {
   team: {
     id: string;
     name: string;
     city: string | null;
+    logoUrl: string | null;
     colorPrimary: string;
     colorSecondary: string;
     playerCount: number;
@@ -18,12 +20,13 @@ export function TeamCard({ team }: TeamCardProps) {
       <Card className="overflow-hidden transition-shadow hover:shadow-md">
         <div className="h-2" style={{ backgroundColor: team.colorPrimary }} />
         <CardContent className="flex items-center gap-3 pt-4">
-          <div
-            className="flex size-12 shrink-0 items-center justify-center rounded-full font-heading text-lg font-bold"
-            style={{ backgroundColor: team.colorPrimary, color: team.colorSecondary }}
-          >
-            {team.name.slice(0, 2).toUpperCase()}
-          </div>
+          <TeamLogo
+            logoUrl={team.logoUrl}
+            name={team.name}
+            colorPrimary={team.colorPrimary}
+            colorSecondary={team.colorSecondary}
+            size={48}
+          />
           <div>
             <p className="font-heading font-semibold uppercase tracking-wide">{team.name}</p>
             <p className="text-sm text-muted-foreground">

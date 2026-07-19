@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/format";
+import { TeamLogo } from "@/components/teams/team-logo";
 import type { MatchStatus } from "@/generated/prisma/enums";
 
 type MatchCardProps = {
@@ -11,8 +12,8 @@ type MatchCardProps = {
     status: MatchStatus;
     homeScore: number | null;
     awayScore: number | null;
-    homeTeam: { id: string; name: string; colorPrimary: string };
-    awayTeam: { id: string; name: string; colorPrimary: string };
+    homeTeam: { id: string; name: string; logoUrl: string | null; colorPrimary: string; colorSecondary: string };
+    awayTeam: { id: string; name: string; logoUrl: string | null; colorPrimary: string; colorSecondary: string };
   };
 };
 
@@ -35,9 +36,12 @@ export function MatchCard({ match }: MatchCardProps) {
         <Link href={`/ekipe/${match.homeTeam.id}`} className="font-medium hover:underline">
           {match.homeTeam.name}
         </Link>
-        <span
-          className="size-3 shrink-0 rounded-full"
-          style={{ backgroundColor: match.homeTeam.colorPrimary }}
+        <TeamLogo
+          logoUrl={match.homeTeam.logoUrl}
+          name={match.homeTeam.name}
+          colorPrimary={match.homeTeam.colorPrimary}
+          colorSecondary={match.homeTeam.colorSecondary}
+          size={28}
         />
       </div>
 
@@ -53,9 +57,12 @@ export function MatchCard({ match }: MatchCardProps) {
       </div>
 
       <div className="flex flex-1 items-center gap-2">
-        <span
-          className="size-3 shrink-0 rounded-full"
-          style={{ backgroundColor: match.awayTeam.colorPrimary }}
+        <TeamLogo
+          logoUrl={match.awayTeam.logoUrl}
+          name={match.awayTeam.name}
+          colorPrimary={match.awayTeam.colorPrimary}
+          colorSecondary={match.awayTeam.colorSecondary}
+          size={28}
         />
         <Link href={`/ekipe/${match.awayTeam.id}`} className="font-medium hover:underline">
           {match.awayTeam.name}

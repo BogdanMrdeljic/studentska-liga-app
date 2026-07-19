@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getActiveSeason } from "@/lib/standings";
 import { RosterTable } from "@/components/teams/roster-table";
 import { MatchCard } from "@/components/matches/match-card";
+import { TeamLogo } from "@/components/teams/team-logo";
 
 export default async function TeamDetailPage({
   params,
@@ -36,11 +37,18 @@ export default async function TeamDetailPage({
   return (
     <div>
       <div
-        className="py-10 text-center"
+        className="flex flex-col items-center gap-3 py-10 text-center"
         style={{ backgroundColor: team.colorPrimary, color: team.colorSecondary }}
       >
+        <TeamLogo
+          logoUrl={team.logoUrl}
+          name={team.name}
+          colorPrimary={team.colorPrimary}
+          colorSecondary={team.colorSecondary}
+          size={80}
+        />
         <h1 className="font-heading text-3xl font-bold uppercase tracking-wide">{team.name}</h1>
-        <p className="mt-1 opacity-90">{team.city ?? "Nepoznat grad"}</p>
+        <p className="opacity-90">{team.city ?? "Nepoznat grad"}</p>
       </div>
 
       <div className="mx-auto max-w-4xl px-4 py-10">

@@ -3,7 +3,9 @@ import { prisma } from "@/lib/prisma";
 export type StandingRow = {
   teamId: string;
   teamName: string;
+  logoUrl: string | null;
   colorPrimary: string;
+  colorSecondary: string;
   played: number;
   won: number;
   lost: number;
@@ -22,7 +24,9 @@ export async function getStandings(seasonId: string): Promise<StandingRow[]> {
     table.set(team.id, {
       teamId: team.id,
       teamName: team.name,
+      logoUrl: team.logoUrl,
       colorPrimary: team.colorPrimary,
+      colorSecondary: team.colorSecondary,
       played: 0,
       won: 0,
       lost: 0,
@@ -64,7 +68,9 @@ export async function getStandings(seasonId: string): Promise<StandingRow[]> {
   const rows = Array.from(table.values()).map((row) => ({
     teamId: row.teamId,
     teamName: row.teamName,
+    logoUrl: row.logoUrl,
     colorPrimary: row.colorPrimary,
+    colorSecondary: row.colorSecondary,
     played: row.played,
     won: row.won,
     lost: row.lost,
@@ -95,7 +101,9 @@ export async function getSeasonStandings(seasonId: string): Promise<StandingRow[
     return archived.map((row) => ({
       teamId: row.teamId,
       teamName: row.team.name,
+      logoUrl: row.team.logoUrl,
       colorPrimary: row.team.colorPrimary,
+      colorSecondary: row.team.colorSecondary,
       played: row.played,
       won: row.won,
       lost: row.lost,

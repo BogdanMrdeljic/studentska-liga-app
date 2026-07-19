@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getActiveSeason } from "@/lib/standings";
 import { Card, CardContent } from "@/components/ui/card";
+import { TeamLogo } from "@/components/teams/team-logo";
 
 export default async function PlayerDetailPage({
   params,
@@ -45,9 +46,19 @@ export default async function PlayerDetailPage({
           <h1 className="font-heading text-3xl font-bold uppercase tracking-wide">
             {player.name}
           </h1>
-          <p className="text-muted-foreground">
+          <p className="flex items-center gap-1.5 text-muted-foreground">
             {player.position ?? "Pozicija nepoznata"} ·{" "}
-            <Link href={`/ekipe/${player.team.id}`} className="text-primary hover:underline">
+            <Link
+              href={`/ekipe/${player.team.id}`}
+              className="inline-flex items-center gap-1.5 text-primary hover:underline"
+            >
+              <TeamLogo
+                logoUrl={player.team.logoUrl}
+                name={player.team.name}
+                colorPrimary={player.team.colorPrimary}
+                colorSecondary={player.team.colorSecondary}
+                size={20}
+              />
               {player.team.name}
             </Link>
           </p>
