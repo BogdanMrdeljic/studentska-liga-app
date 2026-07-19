@@ -8,6 +8,7 @@ import { NavLink } from "@/components/layout/nav-link";
 const navLinks = [
   { href: "/raspored", label: "Raspored" },
   { href: "/tabela", label: "Tabela" },
+  { href: "/statistika", label: "Statistika" },
   { href: "/ekipe", label: "Ekipe" },
   { href: "/objave", label: "Objave" },
 ];

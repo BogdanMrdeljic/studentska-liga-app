@@ -56,15 +56,16 @@ model Team {
 }
 
 model Player {
-  id        String       @id @default(cuid())
-  name      String
-  position  String?
-  number    Int?
-  photoUrl  String?
-  team      Team         @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId    String
-  stats     PlayerStat[]
-  createdAt DateTime     @default(now())
+  id          String       @id @default(cuid())
+  name        String
+  position    String?
+  number      Int?
+  indexNumber String?
+  photoUrl    String?
+  team        Team         @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId      String
+  stats       PlayerStat[]
+  createdAt   DateTime     @default(now())
 }
 
 model PlayerStat {
@@ -77,7 +78,8 @@ model PlayerStat {
   points      Int    @default(0)
   rebounds    Int    @default(0)
   assists     Int    @default(0)
-  fouls       Int    @default(0)
+  steals      Int    @default(0)
+  blocks      Int    @default(0)
 
   @@unique([playerId, seasonId])
 }

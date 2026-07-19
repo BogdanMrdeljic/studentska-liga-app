@@ -46,6 +46,10 @@ export default async function NoviIgracPage() {
                 <Input id="number" name="number" type="number" min={1} max={99} />
               </div>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="indexNumber">Broj indeksa</Label>
+              <Input id="indexNumber" name="indexNumber" placeholder="2026/0123" />
+            </div>
             <Button type="submit" className="w-full">
               Sačuvaj
             </Button>

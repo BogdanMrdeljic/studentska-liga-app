@@ -11,10 +11,11 @@ export async function createPlayer(formData: FormData) {
   const position = String(formData.get("position") ?? "").trim() || null;
   const numberRaw = String(formData.get("number") ?? "").trim();
   const number = numberRaw ? Number(numberRaw) : null;
+  const indexNumber = String(formData.get("indexNumber") ?? "").trim() || null;
   const teamId = String(formData.get("teamId") ?? "");
   if (!name || !teamId) throw new Error("Ime i ekipa su obavezni.");
 
-  await prisma.player.create({ data: { name, position, number, teamId } });
+  await prisma.player.create({ data: { name, position, number, indexNumber, teamId } });
   revalidatePath("/admin/igraci");
   revalidatePath(`/ekipe/${teamId}`);
   redirect("/admin/igraci");
@@ -30,22 +31,27 @@ export async function updatePlayerWithStats(
   const position = String(formData.get("position") ?? "").trim() || null;
   const numberRaw = String(formData.get("number") ?? "").trim();
   const number = numberRaw ? Number(numberRaw) : null;
+  const indexNumber = String(formData.get("indexNumber") ?? "").trim() || null;
   const teamId = String(formData.get("teamId") ?? "");
   if (!name || !teamId) throw new Error("Ime i ekipa su obavezni.");
 
-  await prisma.player.update({ where: { id }, data: { name, position, number, teamId } });
+  await prisma.player.update({
+    where: { id },
+    data: { name, position, number, indexNumber, teamId },
+  });
 
   if (seasonId) {
     const appearances = Number(formData.get("appearances") ?? 0);
     const points = Number(formData.get("points") ?? 0);
     const rebounds = Number(formData.get("rebounds") ?? 0);
     const assists = Number(formData.get("assists") ?? 0);
-    const fouls = Number(formData.get("fouls") ?? 0);
+    const steals = Number(formData.get("steals") ?? 0);
+    const blocks = Number(formData.get("blocks") ?? 0);
 
     await prisma.playerStat.upsert({
       where: { playerId_seasonId: { playerId: id, seasonId } },
-      update: { appearances, points, rebounds, assists, fouls },
-      create: { playerId: id, seasonId, appearances, points, rebounds, assists, fouls },
+      update: { appearances, points, rebounds, assists, steals, blocks },
+      create: { playerId: id, seasonId, appearances, points, rebounds, assists, steals, blocks },
     });
   }
 

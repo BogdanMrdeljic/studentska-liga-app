@@ -34,6 +34,7 @@ export default async function AdminIgraciPage() {
               <TableHead>Ime</TableHead>
               <TableHead>Ekipa</TableHead>
               <TableHead>Pozicija</TableHead>
+              <TableHead>Br. indeksa</TableHead>
               <TableHead className="text-right">Akcije</TableHead>
             </TableRow>
           </TableHeader>
@@ -43,6 +44,7 @@ export default async function AdminIgraciPage() {
                 <TableCell className="font-medium">{player.name}</TableCell>
                 <TableCell className="text-muted-foreground">{player.team.name}</TableCell>
                 <TableCell className="text-muted-foreground">{player.position ?? "-"}</TableCell>
+                <TableCell className="text-muted-foreground">{player.indexNumber ?? "-"}</TableCell>
                 <TableCell className="flex justify-end gap-2">
                   <Button
                     variant="outline"

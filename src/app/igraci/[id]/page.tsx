@@ -30,7 +30,8 @@ export default async function PlayerDetailPage({
     { label: "Poeni", value: stat?.points ?? 0 },
     { label: "Skokovi", value: stat?.rebounds ?? 0 },
     { label: "Asistencije", value: stat?.assists ?? 0 },
-    { label: "Faulovi", value: stat?.fouls ?? 0 },
+    { label: "Ukradene lopte", value: stat?.steals ?? 0 },
+    { label: "Blokade", value: stat?.blocks ?? 0 },
   ];
 
   return (
@@ -62,10 +63,15 @@ export default async function PlayerDetailPage({
               {player.team.name}
             </Link>
           </p>
+          {player.indexNumber && (
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              Broj indeksa: <span className="font-medium text-foreground">{player.indexNumber}</span>
+            </p>
+          )}
         </div>
       </div>
 
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {statItems.map((item) => (
           <Card key={item.label}>
             <CardContent className="pt-6 text-center">

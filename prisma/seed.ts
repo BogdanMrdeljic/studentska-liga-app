@@ -64,7 +64,8 @@ async function main() {
           points: Math.floor(Math.random() * 20) + 5,
           rebounds: Math.floor(Math.random() * 9) + 1,
           assists: Math.floor(Math.random() * 8),
-          fouls: Math.floor(Math.random() * 4),
+          steals: Math.floor(Math.random() * 4),
+          blocks: Math.floor(Math.random() * 3),
         },
       });
     }

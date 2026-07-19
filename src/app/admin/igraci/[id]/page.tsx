@@ -71,6 +71,15 @@ export default async function EditPlayerPage({
                 />
               </div>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="indexNumber">Broj indeksa</Label>
+              <Input
+                id="indexNumber"
+                name="indexNumber"
+                placeholder="2026/0123"
+                defaultValue={player.indexNumber ?? ""}
+              />
+            </div>
 
             {season && (
               <>
@@ -120,13 +129,23 @@ export default async function EditPlayerPage({
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="fouls">Faulovi</Label>
+                    <Label htmlFor="steals">Ukradene lopte</Label>
                     <Input
-                      id="fouls"
-                      name="fouls"
+                      id="steals"
+                      name="steals"
                       type="number"
                       min={0}
-                      defaultValue={stat?.fouls ?? 0}
+                      defaultValue={stat?.steals ?? 0}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="blocks">Blokade</Label>
+                    <Input
+                      id="blocks"
+                      name="blocks"
+                      type="number"
+                      min={0}
+                      defaultValue={stat?.blocks ?? 0}
                     />
                   </div>
                 </div>
