@@ -35,7 +35,7 @@ export default async function EditTeamPage({
               <Label htmlFor="city">Grad</Label>
               <Input id="city" name="city" defaultValue={team.city ?? ""} />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="colorPrimary">Primarna boja</Label>
                 <Input

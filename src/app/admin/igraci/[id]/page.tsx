@@ -54,7 +54,7 @@ export default async function EditPlayerPage({
                 ))}
               </NativeSelect>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="position">Pozicija</Label>
                 <Input id="position" name="position" defaultValue={player.position ?? ""} />
@@ -78,7 +78,7 @@ export default async function EditPlayerPage({
                 <p className="text-sm font-medium text-muted-foreground">
                   Statistika za sezonu {season.name}
                 </p>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                   <div className="space-y-2">
                     <Label htmlFor="appearances">Nastupi</Label>
                     <Input

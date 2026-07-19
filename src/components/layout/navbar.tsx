@@ -16,9 +16,9 @@ export async function Navbar() {
   const isAdmin = session?.user?.role === "ADMIN";
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2">
+    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 relative">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-4">
+        <Link href="/" className="flex min-w-0 items-center gap-2">
           <div className="relative size-10 shrink-0 overflow-hidden rounded-full ring-1 ring-border">
             <Image
               src="/logo.png"
@@ -29,7 +29,7 @@ export async function Navbar() {
               priority
             />
           </div>
-          <span className="font-heading text-lg font-bold uppercase tracking-wide">
+          <span className="hidden truncate font-heading text-lg font-bold uppercase tracking-wide sm:inline">
             Studentska Košarkaška Liga
           </span>
         </Link>
@@ -54,10 +54,10 @@ export async function Navbar() {
           )}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           {session?.user ? (
             <>
-              <span className="hidden text-sm text-muted-foreground sm:inline">
+              <span className="hidden text-sm text-muted-foreground lg:inline">
                 {session.user.name}
               </span>
               <form
@@ -65,6 +65,7 @@ export async function Navbar() {
                   "use server";
                   await signOut({ redirectTo: "/" });
                 }}
+                className="hidden md:block"
               >
                 <Button type="submit" variant="outline" size="sm">
                   Odjava
@@ -72,16 +73,20 @@ export async function Navbar() {
               </form>
             </>
           ) : (
-            <>
+            <div className="hidden items-center gap-2 md:flex">
               <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/prijava" />}>
                 Prijava
               </Button>
               <Button size="sm" nativeButton={false} render={<Link href="/registracija" />}>
                 Registracija
               </Button>
-            </>
+            </div>
           )}
-          <MobileNav links={navLinks} isAdmin={isAdmin} />
+          <MobileNav
+            links={navLinks}
+            isAdmin={isAdmin}
+            userName={session?.user?.name ?? null}
+          />
         </div>
       </div>
     </header>

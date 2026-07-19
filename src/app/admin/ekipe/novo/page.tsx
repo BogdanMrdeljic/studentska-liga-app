@@ -23,7 +23,7 @@ export default function NovaEkipaPage() {
               <Label htmlFor="city">Grad</Label>
               <Input id="city" name="city" />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="colorPrimary">Primarna boja</Label>
                 <Input id="colorPrimary" name="colorPrimary" type="color" defaultValue="#1d4ed8" />

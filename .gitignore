@@ -47,3 +47,6 @@ next-env.d.ts
 
 # Claude Code runtime lock files
 .claude/*.lock
+
+.vercel
+.env*
