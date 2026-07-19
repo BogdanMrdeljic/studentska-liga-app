@@ -1,6 +1,10 @@
 import { formatDate } from "@/lib/format";
+import { deleteComment } from "@/actions/comments";
+import { DeleteButton } from "@/components/admin/delete-button";
 
 type CommentListProps = {
+  postId: string;
+  isAdmin?: boolean;
   comments: {
     id: string;
     content: string;
@@ -9,7 +13,7 @@ type CommentListProps = {
   }[];
 };
 
-export function CommentList({ comments }: CommentListProps) {
+export function CommentList({ postId, isAdmin = false, comments }: CommentListProps) {
   if (comments.length === 0) {
     return <p className="text-sm text-muted-foreground">Još nema komentara. Budi prvi!</p>;
   }
@@ -23,6 +27,11 @@ export function CommentList({ comments }: CommentListProps) {
             <span className="text-xs text-muted-foreground">{formatDate(comment.createdAt)}</span>
           </div>
           <p className="mt-1 text-sm">{comment.content}</p>
+          {isAdmin && (
+            <div className="mt-2">
+              <DeleteButton action={deleteComment.bind(null, postId, comment.id)} />
+            </div>
+          )}
         </li>
       ))}
     </ul>

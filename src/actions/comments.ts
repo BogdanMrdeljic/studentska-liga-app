@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/require-admin";
 
 export type CommentState = { error?: string } | undefined;
 
@@ -27,4 +28,10 @@ export async function addComment(
 
   revalidatePath(`/objave/${postId}`);
   return undefined;
+}
+
+export async function deleteComment(postId: string, commentId: string) {
+  await requireAdmin();
+  await prisma.comment.delete({ where: { id: commentId } });
+  revalidatePath(`/objave/${postId}`);
 }

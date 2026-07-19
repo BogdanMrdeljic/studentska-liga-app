@@ -82,7 +82,7 @@ export default async function PostDetailPage({
           Komentari ({post.comments.length})
         </h2>
 
-        <CommentList comments={post.comments} />
+        <CommentList postId={post.id} isAdmin={isAdmin} comments={post.comments} />
 
         <div className="mt-6">
           {session?.user ? (
