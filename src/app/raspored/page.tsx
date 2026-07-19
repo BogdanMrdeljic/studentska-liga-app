@@ -1,9 +1,17 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { getActiveSeason } from "@/lib/standings";
+import { getActiveSeason, getAllSeasons } from "@/lib/standings";
 import { MatchCard } from "@/components/matches/match-card";
+import { cn } from "@/lib/utils";
 
-export default async function RasporedPage() {
-  const season = await getActiveSeason();
+export default async function RasporedPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sezona?: string }>;
+}) {
+  const { sezona } = await searchParams;
+  const [seasons, activeSeason] = await Promise.all([getAllSeasons(), getActiveSeason()]);
+  const season = sezona ? (seasons.find((s) => s.id === sezona) ?? activeSeason) : activeSeason;
 
   const matches = season
     ? await prisma.match.findMany({
@@ -22,7 +30,27 @@ export default async function RasporedPage() {
       <h1 className="font-heading text-3xl font-bold uppercase tracking-wide">
         Raspored utakmica
       </h1>
-      <p className="mt-1 text-muted-foreground">
+
+      {seasons.length > 1 && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {seasons.map((s) => (
+            <Link
+              key={s.id}
+              href={`/raspored?sezona=${s.id}`}
+              className={cn(
+                "rounded-full border px-3 py-1 text-sm font-medium transition-colors",
+                season?.id === s.id
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {s.name}
+            </Link>
+          ))}
+        </div>
+      )}
+
+      <p className="mt-4 text-muted-foreground">
         Sezona: {season?.name ?? "Nema aktivne sezone"}
       </p>
 
