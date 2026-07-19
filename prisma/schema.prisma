@@ -33,11 +33,12 @@ model User {
 }
 
 model Season {
-  id          String       @id @default(cuid())
-  name        String       @unique
-  isActive    Boolean      @default(false)
+  id          String           @id @default(cuid())
+  name        String           @unique
+  isActive    Boolean          @default(false)
   matches     Match[]
   playerStats PlayerStat[]
+  standings   SeasonStanding[]
 }
 
 model Team {
@@ -48,9 +49,10 @@ model Team {
   colorPrimary   String   @default("#dc2626")
   colorSecondary String   @default("#facc15")
   players        Player[]
-  homeMatches    Match[]  @relation("HomeTeam")
-  awayMatches    Match[]  @relation("AwayTeam")
-  createdAt      DateTime @default(now())
+  homeMatches    Match[]          @relation("HomeTeam")
+  awayMatches    Match[]          @relation("AwayTeam")
+  standings      SeasonStanding[]
+  createdAt      DateTime         @default(now())
 }
 
 model Player {
@@ -78,6 +80,25 @@ model PlayerStat {
   fouls       Int    @default(0)
 
   @@unique([playerId, seasonId])
+}
+
+// Final standings for an archived season, entered directly since we don't
+// have match-by-match history for past seasons (unlike the active season,
+// whose table is computed live from Match results).
+model SeasonStanding {
+  id        String @id @default(cuid())
+  season    Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  seasonId  String
+  team      Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId    String
+  position  Int
+  played    Int
+  won       Int
+  lost      Int
+  pointDiff Int
+  points    Int
+
+  @@unique([seasonId, teamId])
 }
 
 model Match {

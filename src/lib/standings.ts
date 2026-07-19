@@ -3,26 +3,24 @@ import { prisma } from "@/lib/prisma";
 export type StandingRow = {
   teamId: string;
   teamName: string;
-  logoUrl: string | null;
   colorPrimary: string;
   played: number;
   won: number;
   lost: number;
-  pointsFor: number;
-  pointsAgainst: number;
   pointDiff: number;
-  winPct: number;
+  points: number;
 };
 
+// Live table for the active season, computed from finished matches.
+// Win = 2 points, loss = 1 point, matching the league's scoring convention.
 export async function getStandings(seasonId: string): Promise<StandingRow[]> {
   const teams = await prisma.team.findMany();
 
-  const table = new Map<string, StandingRow>();
+  const table = new Map<string, StandingRow & { pointsFor: number; pointsAgainst: number }>();
   for (const team of teams) {
     table.set(team.id, {
       teamId: team.id,
       teamName: team.name,
-      logoUrl: team.logoUrl,
       colorPrimary: team.colorPrimary,
       played: 0,
       won: 0,
@@ -30,7 +28,7 @@ export async function getStandings(seasonId: string): Promise<StandingRow[]> {
       pointsFor: 0,
       pointsAgainst: 0,
       pointDiff: 0,
-      winPct: 0,
+      points: 0,
     });
   }
 
@@ -62,22 +60,56 @@ export async function getStandings(seasonId: string): Promise<StandingRow[]> {
   }
 
   const rows = Array.from(table.values()).map((row) => ({
-    ...row,
+    teamId: row.teamId,
+    teamName: row.teamName,
+    colorPrimary: row.colorPrimary,
+    played: row.played,
+    won: row.won,
+    lost: row.lost,
     pointDiff: row.pointsFor - row.pointsAgainst,
-    winPct: row.played > 0 ? row.won / row.played : 0,
+    points: row.won * 2 + row.lost * 1,
   }));
 
   rows.sort((a, b) => {
-    if (b.winPct !== a.winPct) return b.winPct - a.winPct;
-    if (b.won !== a.won) return b.won - a.won;
+    if (b.points !== a.points) return b.points - a.points;
     return b.pointDiff - a.pointDiff;
   });
 
   return rows;
 }
 
+// Standings for any season: uses the archived final table if one was entered
+// (past seasons, where we only have the end result, not match history),
+// otherwise falls back to computing it live from matches (active season).
+export async function getSeasonStandings(seasonId: string): Promise<StandingRow[]> {
+  const archived = await prisma.seasonStanding.findMany({
+    where: { seasonId },
+    include: { team: true },
+    orderBy: { position: "asc" },
+  });
+
+  if (archived.length > 0) {
+    return archived.map((row) => ({
+      teamId: row.teamId,
+      teamName: row.team.name,
+      colorPrimary: row.team.colorPrimary,
+      played: row.played,
+      won: row.won,
+      lost: row.lost,
+      pointDiff: row.pointDiff,
+      points: row.points,
+    }));
+  }
+
+  return getStandings(seasonId);
+}
+
 export async function getActiveSeason() {
   const active = await prisma.season.findFirst({ where: { isActive: true } });
   if (active) return active;
   return prisma.season.findFirst({ orderBy: { name: "desc" } });
+}
+
+export async function getAllSeasons() {
+  return prisma.season.findMany({ orderBy: { name: "desc" } });
 }
