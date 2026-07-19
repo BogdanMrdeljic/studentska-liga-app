@@ -42,8 +42,9 @@ next-env.d.ts
 
 /src/generated/prisma
 
-# local reference asset, not part of the app (see public/logo.png)
+# local reference assets, not part of the app (see public/logo.png, public/posts/)
 /studligalogo.png
+/images
 
 # Claude Code runtime lock files
 .claude/*.lock

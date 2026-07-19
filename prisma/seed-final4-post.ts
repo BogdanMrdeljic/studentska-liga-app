@@ -43,6 +43,7 @@ async function main() {
     data: {
       title: TITLE,
       content: CONTENT,
+      imageUrl: "/posts/final4-najava.jpg",
       authorId: admin.id,
     },
   });
