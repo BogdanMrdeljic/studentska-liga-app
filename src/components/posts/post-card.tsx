@@ -20,13 +20,13 @@ export function PostCard({ post }: PostCardProps) {
     <Link href={`/objave/${post.id}`}>
       <Card className="h-full overflow-hidden transition-shadow hover:shadow-md">
         {post.imageUrl && (
-          <div className="relative aspect-video w-full">
+          <div className="relative aspect-[4/5] w-full bg-muted">
             <Image
               src={post.imageUrl}
               alt={post.title}
               fill
               sizes="(max-width: 768px) 100vw, 400px"
-              className="object-cover"
+              className="object-contain"
             />
           </div>
         )}

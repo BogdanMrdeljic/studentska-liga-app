@@ -54,13 +54,13 @@ export default async function PostDetailPage({
       </p>
 
       {post.imageUrl && (
-        <div className="relative mt-6 aspect-square w-full overflow-hidden rounded-lg sm:aspect-video">
+        <div className="relative mx-auto mt-6 aspect-[4/5] w-full max-w-md overflow-hidden rounded-lg bg-muted sm:max-w-lg">
           <Image
             src={post.imageUrl}
             alt={post.title}
             fill
-            sizes="(max-width: 768px) 100vw, 768px"
-            className="object-cover"
+            sizes="(max-width: 640px) 100vw, 512px"
+            className="object-contain"
             priority
           />
         </div>
