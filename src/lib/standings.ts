@@ -9,6 +9,7 @@ export type StandingRow = {
   lost: number;
   pointDiff: number;
   points: number;
+  note: string | null;
 };
 
 // Live table for the active season, computed from finished matches.
@@ -29,6 +30,7 @@ export async function getStandings(seasonId: string): Promise<StandingRow[]> {
       pointsAgainst: 0,
       pointDiff: 0,
       points: 0,
+      note: null,
     });
   }
 
@@ -68,6 +70,7 @@ export async function getStandings(seasonId: string): Promise<StandingRow[]> {
     lost: row.lost,
     pointDiff: row.pointsFor - row.pointsAgainst,
     points: row.won * 2 + row.lost * 1,
+    note: null,
   }));
 
   rows.sort((a, b) => {
@@ -98,6 +101,7 @@ export async function getSeasonStandings(seasonId: string): Promise<StandingRow[
       lost: row.lost,
       pointDiff: row.pointDiff,
       points: row.points,
+      note: row.note,
     }));
   }
 

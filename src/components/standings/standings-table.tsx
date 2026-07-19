@@ -50,6 +50,11 @@ export function StandingsTable({
                   />
                   {row.teamName}
                 </Link>
+                {row.note && (
+                  <span className="mt-0.5 block text-xs font-normal italic text-muted-foreground">
+                    {row.note}
+                  </span>
+                )}
               </TableCell>
               <TableCell className="text-center">{row.played}</TableCell>
               <TableCell className="text-center">{row.won}</TableCell>

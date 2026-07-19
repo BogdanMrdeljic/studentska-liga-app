@@ -4,8 +4,9 @@ import { PrismaPg } from "@prisma/adapter-pg";
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
-// Final tabela sezone 2024/25, uneta ručno jer nemamo evidenciju utakmica
-// iz te sezone (samo krajnji plasman).
+// Final tabela sezone 2025/26, uneta ručno jer nemamo evidenciju utakmica
+// iz te sezone (samo krajnji plasman). ATUSS je diskvalifikovan pre kraja
+// sezone, otud i njihove 2 neodigrane utakmice iz raspoređa.
 const standings = [
   { position: 1, team: "FON", played: 4, won: 4, lost: 0, pointDiff: 38, points: 8 },
   { position: 2, team: "ETF", played: 4, won: 3, lost: 1, pointDiff: 98, points: 7 },
@@ -22,14 +23,23 @@ const standings = [
   { position: 13, team: "ARHITEKTURA", played: 4, won: 0, lost: 4, pointDiff: -49, points: 4 },
   { position: 14, team: "RAF", played: 4, won: 0, lost: 4, pointDiff: -96, points: 3 },
   { position: 15, team: "TMF", played: 4, won: 0, lost: 4, pointDiff: -69, points: 2 },
-  { position: 16, team: "ATUSS", played: 4, won: 0, lost: 4, pointDiff: -20, points: 0 },
+  {
+    position: 16,
+    team: "ATUSS",
+    played: 4,
+    won: 0,
+    lost: 4,
+    pointDiff: -20,
+    points: 0,
+    note: "Ekipa odustala",
+  },
 ] as const;
 
 async function main() {
   const season = await prisma.season.upsert({
-    where: { name: "2024/25" },
+    where: { name: "2025/26" },
     update: {},
-    create: { name: "2024/25", isActive: false },
+    create: { name: "2025/26", isActive: false },
   });
 
   for (const row of standings) {
@@ -38,6 +48,8 @@ async function main() {
       update: {},
       create: { name: row.team, city: "Beograd" },
     });
+
+    const note = "note" in row ? row.note : null;
 
     await prisma.seasonStanding.upsert({
       where: { seasonId_teamId: { seasonId: season.id, teamId: team.id } },
@@ -48,6 +60,7 @@ async function main() {
         lost: row.lost,
         pointDiff: row.pointDiff,
         points: row.points,
+        note,
       },
       create: {
         seasonId: season.id,
@@ -58,11 +71,12 @@ async function main() {
         lost: row.lost,
         pointDiff: row.pointDiff,
         points: row.points,
+        note,
       },
     });
   }
 
-  console.log("Istorijska tabela (2024/25) uneta.");
+  console.log("Istorijska tabela (2025/26) uneta.");
 }
 
 main()

@@ -97,6 +97,7 @@ model SeasonStanding {
   lost      Int
   pointDiff Int
   points    Int
+  note      String?
 
   @@unique([seasonId, teamId])
 }

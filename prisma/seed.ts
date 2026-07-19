@@ -7,9 +7,9 @@ const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const season = await prisma.season.upsert({
-    where: { name: "2025/26" },
+    where: { name: "2026/27" },
     update: {},
-    create: { name: "2025/26", isActive: true },
+    create: { name: "2026/27", isActive: true },
   });
 
   const teamsData = [
@@ -121,7 +121,7 @@ async function main() {
 
   const post = await prisma.post.create({
     data: {
-      title: "Otvaranje sezone 2025/26!",
+      title: "Otvaranje sezone 2026/27!",
       content:
         "Nova sezona Studentske košarkaške lige počinje ovog vikenda. Pratite raspored i navijajte za svoj fakultet!",
       authorId: admin.id,
