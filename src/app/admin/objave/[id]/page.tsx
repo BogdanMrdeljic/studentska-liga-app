@@ -44,6 +44,15 @@ export default async function EditPostPage({
               <Textarea id="content" name="content" required rows={5} defaultValue={post.content} />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="imageUrl">Slika (URL, opciono)</Label>
+              <Input
+                id="imageUrl"
+                name="imageUrl"
+                placeholder="/posts/naziv-slike.jpg"
+                defaultValue={post.imageUrl ?? ""}
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="matchId">Promovisana utakmica (opciono)</Label>
               <NativeSelect id="matchId" name="matchId" defaultValue={post.matchId ?? ""}>
                 <option value="">Bez utakmice</option>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -35,6 +36,19 @@ export default async function PostDetailPage({
       <p className="mt-1 text-sm text-muted-foreground">
         {post.author.name} · {formatDate(post.createdAt)}
       </p>
+
+      {post.imageUrl && (
+        <div className="relative mt-6 aspect-square w-full overflow-hidden rounded-lg sm:aspect-video">
+          <Image
+            src={post.imageUrl}
+            alt={post.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 768px"
+            className="object-cover"
+            priority
+          />
+        </div>
+      )}
 
       <p className="mt-6 whitespace-pre-wrap leading-relaxed">{post.content}</p>
 

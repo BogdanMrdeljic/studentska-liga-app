@@ -10,10 +10,11 @@ export async function createPost(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   const content = String(formData.get("content") ?? "").trim();
   const matchId = String(formData.get("matchId") ?? "") || null;
+  const imageUrl = String(formData.get("imageUrl") ?? "").trim() || null;
   if (!title || !content) throw new Error("Naslov i sadržaj su obavezni.");
 
   await prisma.post.create({
-    data: { title, content, matchId, authorId: session.user.id },
+    data: { title, content, matchId, imageUrl, authorId: session.user.id },
   });
   revalidatePath("/admin/objave");
   revalidatePath("/objave");
@@ -26,9 +27,10 @@ export async function updatePost(id: string, formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   const content = String(formData.get("content") ?? "").trim();
   const matchId = String(formData.get("matchId") ?? "") || null;
+  const imageUrl = String(formData.get("imageUrl") ?? "").trim() || null;
   if (!title || !content) throw new Error("Naslov i sadržaj su obavezni.");
 
-  await prisma.post.update({ where: { id }, data: { title, content, matchId } });
+  await prisma.post.update({ where: { id }, data: { title, content, matchId, imageUrl } });
   revalidatePath("/admin/objave");
   revalidatePath(`/objave/${id}`);
   revalidatePath("/objave");

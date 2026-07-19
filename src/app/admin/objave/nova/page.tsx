@@ -32,6 +32,10 @@ export default async function NovaObjavaPage() {
               <Textarea id="content" name="content" required rows={5} />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="imageUrl">Slika (URL, opciono)</Label>
+              <Input id="imageUrl" name="imageUrl" placeholder="/posts/naziv-slike.jpg" />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="matchId">Promovisana utakmica (opciono)</Label>
               <NativeSelect id="matchId" name="matchId" defaultValue="">
                 <option value="">Bez utakmice</option>

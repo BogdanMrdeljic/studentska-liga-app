@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDateShort } from "@/lib/format";
 
@@ -7,6 +8,7 @@ type PostCardProps = {
     id: string;
     title: string;
     content: string;
+    imageUrl: string | null;
     createdAt: Date;
     author: { name: string };
     commentCount: number;
@@ -16,7 +18,18 @@ type PostCardProps = {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/objave/${post.id}`}>
-      <Card className="h-full transition-shadow hover:shadow-md">
+      <Card className="h-full overflow-hidden transition-shadow hover:shadow-md">
+        {post.imageUrl && (
+          <div className="relative aspect-video w-full">
+            <Image
+              src={post.imageUrl}
+              alt={post.title}
+              fill
+              sizes="(max-width: 768px) 100vw, 400px"
+              className="object-cover"
+            />
+          </div>
+        )}
         <CardHeader>
           <CardTitle className="font-heading text-xl">{post.title}</CardTitle>
           <p className="text-sm text-muted-foreground">
