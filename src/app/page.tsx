@@ -26,12 +26,15 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/80 py-16 text-primary-foreground">
+      <section className="hero-court relative overflow-hidden py-20 text-primary-foreground">
         <div className="mx-auto max-w-6xl px-4 text-center">
-          <h1 className="font-heading text-4xl font-bold uppercase tracking-wide sm:text-5xl">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-foreground/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary-foreground/80 ring-1 ring-primary-foreground/20">
+            Sezona 2026/27
+          </span>
+          <h1 className="mt-4 font-heading text-4xl font-bold uppercase tracking-wide text-balance sm:text-6xl">
             Studentska Košarkaška Liga
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-primary-foreground/90">
+          <p className="mx-auto mt-4 max-w-xl text-primary-foreground/85">
             Raspored utakmica, tabela, statistika ekipa i igrača — sve na jednom mestu.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -57,7 +60,8 @@ export default async function HomePage() {
 
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-heading text-2xl font-bold uppercase tracking-wide">
+          <h2 className="flex items-center gap-3 font-heading text-2xl font-bold uppercase tracking-wide">
+            <span className="kicker" aria-hidden />
             Naredne utakmice
           </h2>
           <Link href="/raspored" className="text-sm font-medium text-primary hover:underline">
@@ -77,7 +81,8 @@ export default async function HomePage() {
 
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-heading text-2xl font-bold uppercase tracking-wide">
+          <h2 className="flex items-center gap-3 font-heading text-2xl font-bold uppercase tracking-wide">
+            <span className="kicker" aria-hidden />
             Poslednje objave
           </h2>
           <Link href="/objave" className="text-sm font-medium text-primary hover:underline">

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { NavLink } from "@/components/layout/nav-link";
 
 const navLinks = [
   { href: "/raspored", label: "Raspored" },
@@ -16,10 +17,10 @@ export async function Navbar() {
   const isAdmin = session?.user?.role === "ADMIN";
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 relative">
+    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 relative before:absolute before:inset-x-0 before:top-0 before:h-[3px] before:bg-gradient-to-r before:from-primary before:via-accent before:to-primary">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-4">
         <Link href="/" className="flex min-w-0 items-center gap-2">
-          <div className="relative size-10 shrink-0 overflow-hidden rounded-full ring-1 ring-border">
+          <div className="relative size-10 shrink-0 overflow-hidden rounded-full ring-2 ring-primary/20">
             <Image
               src="/logo.png"
               alt="Studentska Košarkaška Liga"
@@ -36,13 +37,9 @@ export async function Navbar() {
 
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
+            <NavLink key={link.href} href={link.href}>
               {link.label}
-            </Link>
+            </NavLink>
           ))}
           {isAdmin && (
             <Link

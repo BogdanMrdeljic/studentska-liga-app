@@ -23,15 +23,15 @@ const statusLabel: Record<MatchStatus, string> = {
   POSTPONED: "Odloženo",
 };
 
-const statusVariant: Record<MatchStatus, "default" | "secondary" | "destructive" | "outline"> = {
+const statusVariant: Record<MatchStatus, "success" | "destructive" | "outline"> = {
   SCHEDULED: "outline",
-  FINISHED: "default",
+  FINISHED: "success",
   POSTPONED: "destructive",
 };
 
 export function MatchCard({ match }: MatchCardProps) {
   return (
-    <div className="flex flex-col gap-3 rounded-lg border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col gap-3 rounded-lg border bg-card p-4 transition-shadow hover:shadow-md sm:flex-row sm:items-center sm:justify-between">
       <div className="flex flex-1 items-center justify-between gap-2 sm:justify-end sm:text-right">
         <Link href={`/ekipe/${match.homeTeam.id}`} className="font-medium hover:underline">
           {match.homeTeam.name}
@@ -45,13 +45,15 @@ export function MatchCard({ match }: MatchCardProps) {
         />
       </div>
 
-      <div className="flex shrink-0 flex-col items-center gap-1 px-2">
+      <div className="flex shrink-0 flex-col items-center gap-1.5 px-3">
         {match.status === "FINISHED" ? (
-          <span className="font-heading text-xl font-bold">
-            {match.homeScore} : {match.awayScore}
+          <span className="font-heading text-2xl font-bold tabular-nums">
+            {match.homeScore} <span className="text-muted-foreground">:</span> {match.awayScore}
           </span>
         ) : (
-          <span className="text-sm text-muted-foreground">{formatDate(match.date)}</span>
+          <span className="text-sm font-medium text-muted-foreground">
+            {formatDate(match.date)}
+          </span>
         )}
         <Badge variant={statusVariant[match.status]}>{statusLabel[match.status]}</Badge>
       </div>

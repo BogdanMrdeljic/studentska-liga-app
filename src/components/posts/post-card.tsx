@@ -18,7 +18,7 @@ type PostCardProps = {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/objave/${post.id}`}>
-      <Card className="h-full overflow-hidden transition-shadow hover:shadow-md">
+      <Card className="h-full overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
         {post.imageUrl && (
           <div className="relative aspect-[4/5] w-full bg-muted">
             <Image
@@ -31,7 +31,9 @@ export function PostCard({ post }: PostCardProps) {
           </div>
         )}
         <CardHeader>
-          <CardTitle className="font-heading text-xl">{post.title}</CardTitle>
+          <CardTitle className="font-heading text-xl uppercase tracking-wide">
+            {post.title}
+          </CardTitle>
           <p className="text-sm text-muted-foreground">
             {post.author.name} · {formatDateShort(post.createdAt)}
           </p>

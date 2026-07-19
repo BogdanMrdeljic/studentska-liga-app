@@ -22,14 +22,28 @@ export function StandingsTable({
     <div className="overflow-x-auto rounded-lg border">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="w-10">#</TableHead>
-            <TableHead>Tim</TableHead>
-            <TableHead className="text-center">Odigrano</TableHead>
-            <TableHead className="text-center">W</TableHead>
-            <TableHead className="text-center">L</TableHead>
-            <TableHead className="text-center">Koš razlika</TableHead>
-            <TableHead className="text-center font-bold">Poeni</TableHead>
+          <TableRow className="bg-muted/60 hover:bg-muted/60">
+            <TableHead className="w-10 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              #
+            </TableHead>
+            <TableHead className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Tim
+            </TableHead>
+            <TableHead className="text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Odigrano
+            </TableHead>
+            <TableHead className="text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              W
+            </TableHead>
+            <TableHead className="text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              L
+            </TableHead>
+            <TableHead className="text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Koš razlika
+            </TableHead>
+            <TableHead className="text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Poeni
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -37,12 +51,24 @@ export function StandingsTable({
             <TableRow
               key={row.teamId}
               className={cn(
+                "border-l-4!",
                 index < playoffCutoff
-                  ? "bg-primary/5"
-                  : "bg-destructive/5"
+                  ? "border-l-success/60!"
+                  : "border-l-destructive/50!"
               )}
             >
-              <TableCell className="font-medium text-muted-foreground">{index + 1}</TableCell>
+              <TableCell className="font-medium text-muted-foreground">
+                <span
+                  className={cn(
+                    "inline-flex size-6 items-center justify-center rounded-full text-xs font-bold tabular-nums",
+                    index === 0
+                      ? "bg-accent text-accent-foreground"
+                      : "bg-muted text-muted-foreground"
+                  )}
+                >
+                  {index + 1}
+                </span>
+              </TableCell>
               <TableCell>
                 <Link href={`/ekipe/${row.teamId}`} className="flex items-center gap-2 font-medium hover:underline">
                   <TeamLogo

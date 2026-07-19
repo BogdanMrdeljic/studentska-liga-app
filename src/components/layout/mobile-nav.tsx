@@ -32,14 +32,14 @@ export function MobileNav({
       </Button>
 
       {open && (
-        <div className="absolute inset-x-0 top-16 z-50 border-b bg-background shadow-lg">
-          <nav className="mx-auto flex max-w-6xl flex-col p-2">
+        <div className="absolute inset-x-0 top-16 z-50 animate-in fade-in slide-in-from-top-2 border-b bg-background shadow-lg duration-150">
+          <nav className="mx-auto flex max-w-6xl flex-col gap-0.5 p-2">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2.5 text-sm font-medium hover:bg-muted"
+                className="rounded-md border-l-2 border-transparent px-3 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:bg-muted"
               >
                 {link.label}
               </Link>
@@ -48,7 +48,7 @@ export function MobileNav({
               <Link
                 href="/admin"
                 onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-muted"
+                className="rounded-md border-l-2 border-transparent px-3 py-2.5 text-sm font-semibold text-accent-foreground transition-colors hover:border-accent hover:bg-muted"
               >
                 Admin
               </Link>

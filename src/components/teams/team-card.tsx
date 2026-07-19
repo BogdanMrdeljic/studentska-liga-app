@@ -16,9 +16,12 @@ type TeamCardProps = {
 
 export function TeamCard({ team }: TeamCardProps) {
   return (
-    <Link href={`/ekipe/${team.id}`}>
-      <Card className="overflow-hidden transition-shadow hover:shadow-md">
-        <div className="h-2" style={{ backgroundColor: team.colorPrimary }} />
+    <Link href={`/ekipe/${team.id}`} className="group">
+      <Card
+        className="overflow-hidden transition-all duration-200 group-hover:-translate-y-0.5 group-hover:shadow-lg"
+        style={{ ["--team-color" as string]: team.colorPrimary }}
+      >
+        <div className="h-1.5 bg-(--team-color)" />
         <CardContent className="flex items-center gap-3 pt-4">
           <TeamLogo
             logoUrl={team.logoUrl}
@@ -27,8 +30,10 @@ export function TeamCard({ team }: TeamCardProps) {
             colorSecondary={team.colorSecondary}
             size={48}
           />
-          <div>
-            <p className="font-heading font-semibold uppercase tracking-wide">{team.name}</p>
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-heading font-semibold uppercase tracking-wide transition-colors group-hover:text-(--team-color)">
+              {team.name}
+            </p>
             <p className="text-sm text-muted-foreground">
               {team.city ?? "Nepoznat grad"} · {team.playerCount} igrača
             </p>
