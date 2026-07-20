@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { getActiveSeason, getAllSeasons } from "@/lib/standings";
+import { getActiveSeason } from "@/lib/standings";
 import { TeamLogo } from "@/components/teams/team-logo";
 import { cn } from "@/lib/utils";
 import {
@@ -32,7 +32,13 @@ export default async function StatistikaPage({
   searchParams: Promise<{ sezona?: string; kategorija?: string; mod?: string }>;
 }) {
   const { sezona, kategorija, mod } = await searchParams;
-  const [seasons, activeSeason] = await Promise.all([getAllSeasons(), getActiveSeason()]);
+  const [seasons, activeSeason] = await Promise.all([
+    prisma.season.findMany({
+      where: { playerStats: { some: {} } },
+      orderBy: { name: "desc" },
+    }),
+    getActiveSeason(),
+  ]);
   const season = sezona ? (seasons.find((s) => s.id === sezona) ?? activeSeason) : activeSeason;
 
   const categoryKey: CategoryKey = isCategoryKey(kategorija) ? kategorija : "poeni";
