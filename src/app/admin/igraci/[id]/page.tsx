@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { PLAYER_POSITIONS } from "@/lib/positions";
 
 export default async function EditPlayerPage({
   params,
@@ -57,7 +58,14 @@ export default async function EditPlayerPage({
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="position">Pozicija</Label>
-                <Input id="position" name="position" defaultValue={player.position ?? ""} />
+                <NativeSelect id="position" name="position" defaultValue={player.position ?? ""}>
+                  <option value="">— Bez pozicije —</option>
+                  {PLAYER_POSITIONS.map((position) => (
+                    <option key={position} value={position}>
+                      {position}
+                    </option>
+                  ))}
+                </NativeSelect>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="number">Broj</Label>
