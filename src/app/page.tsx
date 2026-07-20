@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { MatchCard } from "@/components/matches/match-card";
 import { PostCard } from "@/components/posts/post-card";
 import { StatsBand } from "@/components/home/stats-band";
+import { HeroLogos } from "@/components/home/hero-logos";
 
 export default async function HomePage() {
   const season = await getActiveSeason();
 
-  const [upcomingMatches, latestPostsRaw, teamCount, playerCount] = await Promise.all([
+  const [upcomingMatches, latestPostsRaw, teams, teamCount, playerCount] = await Promise.all([
     season
       ? prisma.match.findMany({
           where: { seasonId: season.id, status: "SCHEDULED" },
@@ -23,6 +24,7 @@ export default async function HomePage() {
       take: 3,
       include: { author: true, _count: { select: { comments: true } } },
     }),
+    prisma.team.findMany({ select: { id: true, name: true, logoUrl: true } }),
     prisma.team.count(),
     prisma.player.count(),
   ]);
@@ -36,7 +38,8 @@ export default async function HomePage() {
   return (
     <div>
       <section className="hero-court relative overflow-hidden py-20 text-primary-foreground">
-        <div className="mx-auto max-w-6xl px-4 text-center">
+        <HeroLogos teams={teams} />
+        <div className="relative z-10 mx-auto max-w-6xl px-4 text-center">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-foreground/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary-foreground/80 ring-1 ring-primary-foreground/20">
             Sezona 2026/27
           </span>
