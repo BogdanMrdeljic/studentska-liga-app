@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="mt-auto border-t bg-gradient-to-b from-secondary/40 to-secondary/70">
       <div className="mx-auto max-w-6xl px-4 py-8">
         <p className="mb-4 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          Uz podršku
+          Uz podršku naših sponzora
         </p>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
           <div className="relative h-10 w-20">
