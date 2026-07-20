@@ -7,7 +7,16 @@ export function Footer() {
         <p className="mb-4 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Uz podršku
         </p>
-        <div className="flex flex-col items-center gap-1">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          <div className="relative h-10 w-20">
+            <Image
+              src="/sponsors/yettel.jpg"
+              alt="Yettel"
+              fill
+              sizes="80px"
+              className="rounded object-contain"
+            />
+          </div>
           <div className="relative h-10 w-32">
             <Image
               src="/sponsors/triglav.png"
