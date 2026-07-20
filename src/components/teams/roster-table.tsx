@@ -14,12 +14,12 @@ type RosterTableProps = {
     name: string;
     position: string | null;
     number: number | null;
-    stats: {
+    stat?: {
       points: number;
       threePointers: number;
       fouls: number;
       appearances: number;
-    }[];
+    };
   }[];
 };
 
@@ -40,7 +40,7 @@ export function RosterTable({ players }: RosterTableProps) {
         </TableHeader>
         <TableBody>
           {players.map((player) => {
-            const stat = player.stats[0];
+            const stat = player.stat;
             return (
               <TableRow key={player.id}>
                 <TableCell className="text-muted-foreground">{player.number ?? "-"}</TableCell>

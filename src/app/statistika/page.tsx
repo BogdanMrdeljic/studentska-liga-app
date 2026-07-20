@@ -32,7 +32,7 @@ export default async function StatistikaPage({
   const { sezona, kategorija, mod } = await searchParams;
   const [seasons, activeSeason] = await Promise.all([
     prisma.season.findMany({
-      where: { playerStats: { some: {} } },
+      where: { matches: { some: { playerStats: { some: {} } } } },
       orderBy: { name: "desc" },
     }),
     getActiveSeason(),
@@ -43,29 +43,49 @@ export default async function StatistikaPage({
   const category = categories.find((c) => c.key === categoryKey)!;
   const isAverage = mod === "prosek";
 
-  const stats = season
-    ? await prisma.playerStat.findMany({
-        where: { seasonId: season.id, appearances: { gt: 0 } },
-        include: { player: { include: { team: true } } },
+  const grouped = season
+    ? await prisma.matchPlayerStat.groupBy({
+        by: ["playerId"],
+        where: { match: { seasonId: season.id } },
+        _sum: { points: true, threePointers: true, fouls: true },
+        _count: { _all: true },
       })
     : [];
 
-  const rows = stats
-    .map((s) => {
-      const total = s[category.field];
-      const value = isAverage ? total / s.appearances : total;
+  const players =
+    grouped.length > 0
+      ? await prisma.player.findMany({
+          where: { id: { in: grouped.map((g) => g.playerId) } },
+          include: { team: true },
+        })
+      : [];
+  const playerById = new Map(players.map((p) => [p.id, p]));
+
+  const rows = grouped
+    .map((g) => {
+      const player = playerById.get(g.playerId);
+      if (!player) return null;
+      const totals = {
+        points: g._sum.points ?? 0,
+        threePointers: g._sum.threePointers ?? 0,
+        fouls: g._sum.fouls ?? 0,
+      };
+      const appearances = g._count._all;
+      const total = totals[category.field];
+      const value = isAverage ? total / appearances : total;
       return {
-        playerId: s.playerId,
-        playerName: s.player.name,
-        teamId: s.player.team.id,
-        teamName: s.player.team.name,
-        teamLogoUrl: s.player.team.logoUrl,
-        colorPrimary: s.player.team.colorPrimary,
-        colorSecondary: s.player.team.colorSecondary,
-        appearances: s.appearances,
+        playerId: g.playerId,
+        playerName: player.name,
+        teamId: player.team.id,
+        teamName: player.team.name,
+        teamLogoUrl: player.team.logoUrl,
+        colorPrimary: player.team.colorPrimary,
+        colorSecondary: player.team.colorSecondary,
+        appearances,
         value,
       };
     })
+    .filter((row): row is NonNullable<typeof row> => row !== null)
     .sort((a, b) => b.value - a.value)
     .slice(0, 20);
 

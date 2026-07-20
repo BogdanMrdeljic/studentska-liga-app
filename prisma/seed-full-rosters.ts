@@ -54,27 +54,8 @@ function randInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function statsForPosition(label: string) {
-  switch (label) {
-    case "Plejmejker":
-      return { points: randInt(6, 16), threePointers: randInt(1, 4), fouls: randInt(0, 3) };
-    case "Bek":
-      return { points: randInt(10, 20), threePointers: randInt(2, 5), fouls: randInt(0, 3) };
-    case "Krilo":
-      return { points: randInt(8, 18), threePointers: randInt(1, 4), fouls: randInt(1, 3) };
-    case "Krilni centar":
-      return { points: randInt(7, 15), threePointers: randInt(0, 2), fouls: randInt(1, 4) };
-    default:
-      return { points: randInt(6, 14), threePointers: randInt(0, 1), fouls: randInt(2, 5) };
-  }
-}
-
 async function main() {
-  const [teams, season] = await Promise.all([
-    prisma.team.findMany({ orderBy: { name: "asc" } }),
-    prisma.season.findFirst({ where: { isActive: true } }),
-  ]);
-  if (!season) throw new Error("Nema aktivne sezone.");
+  const teams = await prisma.team.findMany({ orderBy: { name: "asc" } });
 
   await prisma.player.deleteMany({});
 
@@ -122,23 +103,13 @@ async function main() {
       } while (usedNumbers.has(number));
       usedNumbers.add(number);
 
-      const player = await prisma.player.create({
+      await prisma.player.create({
         data: {
           name: nextName(),
           position: positionLabel,
           number,
           indexNumber: nextIndexNumber(),
           teamId: team.id,
-        },
-      });
-
-      const stats = statsForPosition(positionLabel);
-      await prisma.playerStat.create({
-        data: {
-          playerId: player.id,
-          seasonId: season.id,
-          appearances: randInt(3, 8),
-          ...stats,
         },
       });
       created++;

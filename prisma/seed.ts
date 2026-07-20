@@ -48,22 +48,12 @@ async function main() {
 
   for (const team of teams) {
     for (const [name, position, number] of playerNames) {
-      const player = await prisma.player.create({
+      await prisma.player.create({
         data: {
           name: `${name} (${team.name})`,
           position,
           number,
           teamId: team.id,
-        },
-      });
-      await prisma.playerStat.create({
-        data: {
-          playerId: player.id,
-          seasonId: season.id,
-          appearances: Math.floor(Math.random() * 4) + 2,
-          points: Math.floor(Math.random() * 20) + 5,
-          threePointers: Math.floor(Math.random() * 5),
-          fouls: Math.floor(Math.random() * 4),
         },
       });
     }

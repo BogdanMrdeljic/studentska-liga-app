@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getActiveSeason } from "@/lib/standings";
+import { getPlayerSeasonStats } from "@/lib/player-stats";
 import { Card, CardContent } from "@/components/ui/card";
 import { TeamLogo } from "@/components/teams/team-logo";
 
@@ -13,17 +14,14 @@ export default async function PlayerDetailPage({
   const { id } = await params;
   const season = await getActiveSeason();
 
-  const player = await prisma.player.findUnique({
-    where: { id },
-    include: {
-      team: true,
-      stats: { where: season ? { seasonId: season.id } : undefined },
-    },
-  });
+  const [player, statsMap] = await Promise.all([
+    prisma.player.findUnique({ where: { id }, include: { team: true } }),
+    season ? getPlayerSeasonStats(season.id, [id]) : Promise.resolve(new Map()),
+  ]);
 
   if (!player) notFound();
 
-  const stat = player.stats[0];
+  const stat = statsMap.get(id);
 
   const statItems = [
     { label: "Nastupi", value: stat?.appearances ?? 0 },

@@ -73,11 +73,19 @@ export async function updateMatch(id: string, formData: FormData) {
 export async function updateMatchStats(matchId: string, playerIds: string[], formData: FormData) {
   await requireAdmin();
 
+  // No row for a player who didn't record anything — a bench player who
+  // never checked in shouldn't count as an "appearance" once stats are
+  // aggregated live from these rows.
   await prisma.$transaction(
     playerIds.map((playerId) => {
       const points = Number(formData.get(`points-${playerId}`) ?? 0);
       const threePointers = Number(formData.get(`threes-${playerId}`) ?? 0);
       const fouls = Number(formData.get(`fouls-${playerId}`) ?? 0);
+      const played = points > 0 || threePointers > 0 || fouls > 0;
+
+      if (!played) {
+        return prisma.matchPlayerStat.deleteMany({ where: { matchId, playerId } });
+      }
       return prisma.matchPlayerStat.upsert({
         where: { matchId_playerId: { matchId, playerId } },
         update: { points, threePointers, fouls },
@@ -86,8 +94,21 @@ export async function updateMatchStats(matchId: string, playerIds: string[], for
     })
   );
 
+  const match = await prisma.match.findUnique({
+    where: { id: matchId },
+    select: { homeTeamId: true, awayTeamId: true },
+  });
+
   revalidatePath(`/admin/utakmice/${matchId}`);
   revalidatePath(`/utakmice/${matchId}`);
+  revalidatePath("/statistika");
+  for (const playerId of playerIds) {
+    revalidatePath(`/igraci/${playerId}`);
+  }
+  if (match) {
+    revalidatePath(`/ekipe/${match.homeTeamId}`);
+    revalidatePath(`/ekipe/${match.awayTeamId}`);
+  }
   redirect(`/admin/utakmice/${matchId}`);
 }
 

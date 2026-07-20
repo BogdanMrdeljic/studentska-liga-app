@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getActiveSeason } from "@/lib/standings";
-import { updatePlayerWithStats } from "@/actions/admin/players";
+import { getPlayerSeasonStats } from "@/lib/player-stats";
+import { updatePlayer } from "@/actions/admin/players";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,18 +19,16 @@ export default async function EditPlayerPage({
   const { id } = await params;
   const season = await getActiveSeason();
 
-  const [player, teams] = await Promise.all([
-    prisma.player.findUnique({
-      where: { id },
-      include: { stats: { where: season ? { seasonId: season.id } : undefined } },
-    }),
+  const [player, teams, statsMap] = await Promise.all([
+    prisma.player.findUnique({ where: { id } }),
     prisma.team.findMany({ orderBy: { name: "asc" } }),
+    season ? getPlayerSeasonStats(season.id, [id]) : Promise.resolve(new Map()),
   ]);
 
   if (!player) notFound();
 
-  const stat = player.stats[0];
-  const action = updatePlayerWithStats.bind(null, id, season?.id ?? null);
+  const stat = statsMap.get(id);
+  const action = updatePlayer.bind(null, id);
 
   return (
     <div className="mx-auto max-w-lg px-4 py-10">
@@ -89,61 +88,35 @@ export default async function EditPlayerPage({
               />
             </div>
 
-            {season && (
-              <>
-                <Separator />
-                <p className="text-sm font-medium text-muted-foreground">
-                  Statistika za sezonu {season.name}
-                </p>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                  <div className="space-y-2">
-                    <Label htmlFor="appearances">Nastupi</Label>
-                    <Input
-                      id="appearances"
-                      name="appearances"
-                      type="number"
-                      min={0}
-                      defaultValue={stat?.appearances ?? 0}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="points">Poeni</Label>
-                    <Input
-                      id="points"
-                      name="points"
-                      type="number"
-                      min={0}
-                      defaultValue={stat?.points ?? 0}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="threePointers">Trojke</Label>
-                    <Input
-                      id="threePointers"
-                      name="threePointers"
-                      type="number"
-                      min={0}
-                      defaultValue={stat?.threePointers ?? 0}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="fouls">Faulovi</Label>
-                    <Input
-                      id="fouls"
-                      name="fouls"
-                      type="number"
-                      min={0}
-                      defaultValue={stat?.fouls ?? 0}
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-
             <Button type="submit" className="w-full">
               Sačuvaj izmene
             </Button>
           </form>
+
+          {season && (
+            <>
+              <Separator className="my-6" />
+              <p className="mb-3 text-sm font-medium text-muted-foreground">
+                Statistika za sezonu {season.name} (računa se automatski iz zapisnika
+                utakmica — izmeni je preko zapisnika odigrane utakmice)
+              </p>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {[
+                  { label: "Nastupi", value: stat?.appearances ?? 0 },
+                  { label: "Poeni", value: stat?.points ?? 0 },
+                  { label: "Trojke", value: stat?.threePointers ?? 0 },
+                  { label: "Faulovi", value: stat?.fouls ?? 0 },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-lg border bg-muted/40 p-3 text-center">
+                    <p className="font-heading text-xl font-bold text-primary">{item.value}</p>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                      {item.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </CardContent>
       </Card>
     </div>

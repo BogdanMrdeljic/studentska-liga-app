@@ -21,11 +21,7 @@ export async function createPlayer(formData: FormData) {
   redirect("/admin/igraci");
 }
 
-export async function updatePlayerWithStats(
-  id: string,
-  seasonId: string | null,
-  formData: FormData
-) {
+export async function updatePlayer(id: string, formData: FormData) {
   await requireAdmin();
   const name = String(formData.get("name") ?? "").trim();
   const position = String(formData.get("position") ?? "").trim() || null;
@@ -39,19 +35,6 @@ export async function updatePlayerWithStats(
     where: { id },
     data: { name, position, number, indexNumber, teamId },
   });
-
-  if (seasonId) {
-    const appearances = Number(formData.get("appearances") ?? 0);
-    const points = Number(formData.get("points") ?? 0);
-    const threePointers = Number(formData.get("threePointers") ?? 0);
-    const fouls = Number(formData.get("fouls") ?? 0);
-
-    await prisma.playerStat.upsert({
-      where: { playerId_seasonId: { playerId: id, seasonId } },
-      update: { appearances, points, threePointers, fouls },
-      create: { playerId: id, seasonId, appearances, points, threePointers, fouls },
-    });
-  }
 
   revalidatePath("/admin/igraci");
   revalidatePath(`/igraci/${id}`);

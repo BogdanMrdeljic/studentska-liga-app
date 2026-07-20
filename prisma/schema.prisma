@@ -33,12 +33,11 @@ model User {
 }
 
 model Season {
-  id          String           @id @default(cuid())
-  name        String           @unique
-  isActive    Boolean          @default(false)
-  matches     Match[]
-  playerStats PlayerStat[]
-  standings   SeasonStanding[]
+  id        String           @id @default(cuid())
+  name      String           @unique
+  isActive  Boolean          @default(false)
+  matches   Match[]
+  standings SeasonStanding[]
 }
 
 model Team {
@@ -64,23 +63,8 @@ model Player {
   photoUrl    String?
   team        Team              @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      String
-  stats       PlayerStat[]
   matchStats  MatchPlayerStat[]
   createdAt   DateTime          @default(now())
-}
-
-model PlayerStat {
-  id            String @id @default(cuid())
-  player        Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  playerId      String
-  season        Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
-  seasonId      String
-  appearances   Int    @default(0)
-  points        Int    @default(0)
-  threePointers Int    @default(0)
-  fouls         Int    @default(0)
-
-  @@unique([playerId, seasonId])
 }
 
 // Final standings for an archived season, entered directly since we don't
@@ -122,8 +106,9 @@ model Match {
   createdAt     DateTime    @default(now())
 }
 
-// Per-match box score line for a player — separate from the season-aggregate
-// PlayerStat, entered by the admin from the official match record.
+// Per-match box score line for a player, entered by the admin from the
+// official match record. Season totals (Statistika, player profile, roster
+// table) are computed live by aggregating these rows — not stored separately.
 model MatchPlayerStat {
   id            String @id @default(cuid())
   match         Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
