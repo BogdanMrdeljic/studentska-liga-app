@@ -8,10 +8,12 @@ Web aplikacija Studentske košarkaške lige Univerziteta u Beogradu — raspored
 
 - **Raspored i rezultati** — pregled odigranih i zakazanih utakmica po sezonama
 - **Tabela lige** — automatski računata iz odigranih utakmica za aktuelnu sezonu, arhivirane tabele za prošle sezone
-- **Statistika** — rang liste igrača po poenima, skokovima, asistencijama, ukradenim loptama i blokadama, ukupno ili prosek po utakmici
+- **Statistika po utakmici** — box score po igraču (poeni, trojke, faulovi) za svaku odigranu utakmicu, sa priloženim zapisnikom (slika ili PDF) kao dokazom regularnosti
+- **Statistika sezone** — rang liste igrača po poenima, trojkama i faulovima, ukupno ili prosek po utakmici, računato automatski iz zapisnika utakmica
 - **Ekipe i igrači** — profili svih 16 fakultetskih timova sa rosterima, zvaničnim logoima i statistikom po igraču
 - **Objave** — najave utakmica i vesti lige, sa komentarima za prijavljene korisnike
-- **Admin panel** — zaštićen deo za unos i izmenu ekipa, igrača, utakmica i objava
+- **Sponzori** — istaknuto mesto za generalnog sponzora i sekundarne sponzore
+- **Admin panel** — zaštićen deo za unos i izmenu ekipa, igrača, utakmica, zapisnika i objava
 
 ## Tehnologije
 
