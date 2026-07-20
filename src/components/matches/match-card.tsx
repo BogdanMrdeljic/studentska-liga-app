@@ -47,9 +47,12 @@ export function MatchCard({ match }: MatchCardProps) {
 
       <div className="flex shrink-0 flex-col items-center gap-1.5 px-3">
         {match.status === "FINISHED" ? (
-          <span className="font-heading text-2xl font-bold tabular-nums">
+          <Link
+            href={`/utakmice/${match.id}`}
+            className="font-heading text-2xl font-bold tabular-nums transition-colors hover:text-primary"
+          >
             {match.homeScore} <span className="text-muted-foreground">:</span> {match.awayScore}
-          </span>
+          </Link>
         ) : (
           <span className="text-sm font-medium text-muted-foreground">
             {formatDate(match.date)}

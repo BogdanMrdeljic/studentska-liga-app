@@ -56,16 +56,17 @@ model Team {
 }
 
 model Player {
-  id          String       @id @default(cuid())
+  id          String            @id @default(cuid())
   name        String
   position    String?
   number      Int?
   indexNumber String?
   photoUrl    String?
-  team        Team         @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team        Team              @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      String
   stats       PlayerStat[]
-  createdAt   DateTime     @default(now())
+  matchStats  MatchPlayerStat[]
+  createdAt   DateTime          @default(now())
 }
 
 model PlayerStat {
@@ -103,20 +104,37 @@ model SeasonStanding {
 }
 
 model Match {
-  id         String      @id @default(cuid())
-  season     Season      @relation(fields: [seasonId], references: [id], onDelete: Cascade)
-  seasonId   String
-  homeTeam   Team        @relation("HomeTeam", fields: [homeTeamId], references: [id])
-  homeTeamId String
-  awayTeam   Team        @relation("AwayTeam", fields: [awayTeamId], references: [id])
-  awayTeamId String
-  date       DateTime
-  venue      String?
-  homeScore  Int?
-  awayScore  Int?
-  status     MatchStatus @default(SCHEDULED)
-  posts      Post[]
-  createdAt  DateTime    @default(now())
+  id            String      @id @default(cuid())
+  season        Season      @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  seasonId      String
+  homeTeam      Team        @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  homeTeamId    String
+  awayTeam      Team        @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  awayTeamId    String
+  date          DateTime
+  venue         String?
+  homeScore     Int?
+  awayScore     Int?
+  status        MatchStatus @default(SCHEDULED)
+  scoresheetUrl String?
+  posts         Post[]
+  playerStats   MatchPlayerStat[]
+  createdAt     DateTime    @default(now())
+}
+
+// Per-match box score line for a player — separate from the season-aggregate
+// PlayerStat, entered by the admin from the official match record.
+model MatchPlayerStat {
+  id            String @id @default(cuid())
+  match         Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  matchId       String
+  player        Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  playerId      String
+  points        Int    @default(0)
+  threePointers Int    @default(0)
+  fouls         Int    @default(0)
+
+  @@unique([matchId, playerId])
 }
 
 model Post {

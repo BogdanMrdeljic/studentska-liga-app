@@ -43,6 +43,7 @@ export async function updateMatch(id: string, formData: FormData) {
   const status = String(formData.get("status") ?? "SCHEDULED") as MatchStatus;
   const homeScoreRaw = String(formData.get("homeScore") ?? "").trim();
   const awayScoreRaw = String(formData.get("awayScore") ?? "").trim();
+  const scoresheetUrl = String(formData.get("scoresheetUrl") ?? "").trim() || null;
   if (!dateStr) throw new Error("Datum je obavezan.");
 
   await prisma.match.update({
@@ -53,14 +54,38 @@ export async function updateMatch(id: string, formData: FormData) {
       status,
       homeScore: homeScoreRaw ? Number(homeScoreRaw) : null,
       awayScore: awayScoreRaw ? Number(awayScoreRaw) : null,
+      scoresheetUrl,
     },
   });
 
   revalidatePath("/admin/utakmice");
+  revalidatePath(`/admin/utakmice/${id}`);
+  revalidatePath(`/utakmice/${id}`);
   revalidatePath("/raspored");
   revalidatePath("/tabela");
   revalidatePath("/");
   redirect("/admin/utakmice");
+}
+
+export async function updateMatchStats(matchId: string, playerIds: string[], formData: FormData) {
+  await requireAdmin();
+
+  await prisma.$transaction(
+    playerIds.map((playerId) => {
+      const points = Number(formData.get(`points-${playerId}`) ?? 0);
+      const threePointers = Number(formData.get(`threes-${playerId}`) ?? 0);
+      const fouls = Number(formData.get(`fouls-${playerId}`) ?? 0);
+      return prisma.matchPlayerStat.upsert({
+        where: { matchId_playerId: { matchId, playerId } },
+        update: { points, threePointers, fouls },
+        create: { matchId, playerId, points, threePointers, fouls },
+      });
+    })
+  );
+
+  revalidatePath(`/admin/utakmice/${matchId}`);
+  revalidatePath(`/utakmice/${matchId}`);
+  redirect(`/admin/utakmice/${matchId}`);
 }
 
 export async function deleteMatch(id: string) {
