@@ -11,6 +11,10 @@ export async function signOutAction() {
 
 export type RegisterState = { error?: string } | undefined;
 
+const PASSWORD_REQUIREMENTS =
+  "Lozinka mora imati bar 9 karaktera, jedno veliko slovo, jedan broj i jedan specijalni karakter (+ - * / ! @ # $ % &).";
+const PASSWORD_PATTERN = /^(?=.*[A-Z])(?=.*\d)(?=.*[+\-*/!@#$%&]).{9,}$/;
+
 export async function registerUser(
   _prevState: RegisterState,
   formData: FormData
@@ -21,8 +25,11 @@ export async function registerUser(
     .toLowerCase();
   const password = String(formData.get("password") ?? "");
 
-  if (!name || !email || password.length < 6) {
-    return { error: "Popuni sva polja. Lozinka mora imati bar 6 karaktera." };
+  if (!name || !email) {
+    return { error: "Popuni sva polja." };
+  }
+  if (!PASSWORD_PATTERN.test(password)) {
+    return { error: PASSWORD_REQUIREMENTS };
   }
 
   const existing = await prisma.user.findUnique({ where: { email } });

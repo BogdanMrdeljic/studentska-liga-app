@@ -22,7 +22,19 @@ export function RegisterForm() {
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Lozinka</Label>
-        <Input id="password" name="password" type="password" required minLength={6} />
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          required
+          minLength={9}
+          pattern="(?=.*[A-Z])(?=.*\d)(?=.*[+\-*/!@#$%&]).{9,}"
+          title="Bar 9 karaktera, jedno veliko slovo, jedan broj i jedan specijalni karakter (+ - * / ! @ # $ % &)"
+        />
+        <p className="text-xs text-muted-foreground">
+          Bar 9 karaktera, jedno veliko slovo, jedan broj i jedan specijalni karakter
+          (+ - * / ! @ # $ % &amp;).
+        </p>
       </div>
 
       {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
