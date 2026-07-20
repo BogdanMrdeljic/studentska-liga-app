@@ -45,6 +45,9 @@ export async function updateMatch(id: string, formData: FormData) {
   const awayScoreRaw = String(formData.get("awayScore") ?? "").trim();
   const scoresheetUrl = String(formData.get("scoresheetUrl") ?? "").trim() || null;
   if (!dateStr) throw new Error("Datum je obavezan.");
+  if (scoresheetUrl && !/\.(jpe?g|png|pdf)$/i.test(scoresheetUrl)) {
+    throw new Error("Zapisnik mora biti .jpg, .png ili .pdf fajl.");
+  }
 
   await prisma.match.update({
     where: { id },

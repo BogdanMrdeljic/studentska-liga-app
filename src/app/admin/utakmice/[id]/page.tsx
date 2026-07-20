@@ -98,13 +98,16 @@ export default async function EditMatchPage({
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="scoresheetUrl">Fotografija zapisnika</Label>
+              <Label htmlFor="scoresheetUrl">Zapisnik (slika ili PDF)</Label>
               <Input
                 id="scoresheetUrl"
                 name="scoresheetUrl"
-                placeholder="/zapisnici/naziv-slike.jpg"
+                placeholder="/zapisnici/naziv.jpg ili .pdf"
                 defaultValue={match.scoresheetUrl ?? ""}
               />
+              <p className="text-xs text-muted-foreground">
+                Podržani formati: .jpg, .png ili .pdf
+              </p>
             </div>
             <Button type="submit" className="w-full">
               Sačuvaj izmene

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FileText } from "lucide-react";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
@@ -108,15 +109,32 @@ export default async function MatchDetailPage({
       </div>
 
       {match.scoresheetUrl && (
-        <div className="relative mx-auto mt-6 aspect-[3/4] w-full max-w-md overflow-hidden rounded-lg bg-muted">
-          <Image
-            src={match.scoresheetUrl}
-            alt={`Zapisnik: ${match.homeTeam.name} - ${match.awayTeam.name}`}
-            fill
-            sizes="(max-width: 640px) 100vw, 448px"
-            className="object-contain"
-          />
-        </div>
+        <>
+          {match.scoresheetUrl.toLowerCase().endsWith(".pdf") ? (
+            <a
+              href={match.scoresheetUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mx-auto mt-6 flex w-full max-w-md items-center gap-3 rounded-lg border bg-card p-4 transition-colors hover:bg-muted"
+            >
+              <FileText className="size-8 shrink-0 text-primary" />
+              <div>
+                <p className="font-medium">Zapisnik utakmice</p>
+                <p className="text-sm text-muted-foreground">Otvori PDF dokument</p>
+              </div>
+            </a>
+          ) : (
+            <div className="relative mx-auto mt-6 aspect-[3/4] w-full max-w-md overflow-hidden rounded-lg bg-muted">
+              <Image
+                src={match.scoresheetUrl}
+                alt={`Zapisnik: ${match.homeTeam.name} - ${match.awayTeam.name}`}
+                fill
+                sizes="(max-width: 640px) 100vw, 448px"
+                className="object-contain"
+              />
+            </div>
+          )}
+        </>
       )}
 
       <div className="mt-10 space-y-8">
