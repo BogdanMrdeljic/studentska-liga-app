@@ -4,46 +4,33 @@ import { getActiveSeason } from "@/lib/standings";
 import { Button } from "@/components/ui/button";
 import { MatchCard } from "@/components/matches/match-card";
 import { PostCard } from "@/components/posts/post-card";
-import { TeamMarquee } from "@/components/home/team-marquee";
 import { StatsBand } from "@/components/home/stats-band";
 
 export default async function HomePage() {
   const season = await getActiveSeason();
 
-  const [upcomingMatches, latestPostsRaw, teams, teamCount, playerCount, finishedMatches] =
-    await Promise.all([
-      season
-        ? prisma.match.findMany({
-            where: { seasonId: season.id, status: "SCHEDULED" },
-            orderBy: { date: "asc" },
-            take: 3,
-            include: { homeTeam: true, awayTeam: true },
-          })
-        : Promise.resolve([]),
-      prisma.post.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 3,
-        include: { author: true, _count: { select: { comments: true } } },
-      }),
-      prisma.team.findMany({ orderBy: { name: "asc" } }),
-      prisma.team.count(),
-      prisma.player.count(),
-      prisma.match.findMany({
-        where: { status: "FINISHED" },
-        select: { homeScore: true, awayScore: true },
-      }),
-    ]);
+  const [upcomingMatches, latestPostsRaw, teamCount, playerCount] = await Promise.all([
+    season
+      ? prisma.match.findMany({
+          where: { seasonId: season.id, status: "SCHEDULED" },
+          orderBy: { date: "asc" },
+          take: 3,
+          include: { homeTeam: true, awayTeam: true },
+        })
+      : Promise.resolve([]),
+    prisma.post.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 3,
+      include: { author: true, _count: { select: { comments: true } } },
+    }),
+    prisma.team.count(),
+    prisma.player.count(),
+  ]);
   const latestPosts = latestPostsRaw.map((p) => ({ ...p, commentCount: p._count.comments }));
 
-  const totalPoints = finishedMatches.reduce(
-    (sum, m) => sum + (m.homeScore ?? 0) + (m.awayScore ?? 0),
-    0
-  );
   const stats = [
     { label: "Fakulteta u ligi", value: teamCount },
     { label: "Registrovanih igrača", value: playerCount },
-    { label: "Odigranih utakmica", value: finishedMatches.length },
-    { label: "Postignutih poena", value: totalPoints },
   ];
 
   return (
@@ -80,8 +67,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      <TeamMarquee teams={teams} />
 
       <StatsBand stats={stats} />
 

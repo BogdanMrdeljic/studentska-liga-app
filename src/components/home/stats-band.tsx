@@ -65,7 +65,7 @@ export function StatsBand({ stats }: { stats: Stat[] }) {
 
   return (
     <div ref={ref} className="bg-foreground py-10">
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 sm:grid-cols-4">
+      <div className="mx-auto grid max-w-sm grid-cols-2 gap-6 px-4">
         {stats.map((stat) => (
           <StatTile key={stat.label} stat={stat} active={active} />
         ))}
