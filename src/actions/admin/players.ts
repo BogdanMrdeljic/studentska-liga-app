@@ -43,15 +43,13 @@ export async function updatePlayerWithStats(
   if (seasonId) {
     const appearances = Number(formData.get("appearances") ?? 0);
     const points = Number(formData.get("points") ?? 0);
-    const rebounds = Number(formData.get("rebounds") ?? 0);
-    const assists = Number(formData.get("assists") ?? 0);
-    const steals = Number(formData.get("steals") ?? 0);
-    const blocks = Number(formData.get("blocks") ?? 0);
+    const threePointers = Number(formData.get("threePointers") ?? 0);
+    const fouls = Number(formData.get("fouls") ?? 0);
 
     await prisma.playerStat.upsert({
       where: { playerId_seasonId: { playerId: id, seasonId } },
-      update: { appearances, points, rebounds, assists, steals, blocks },
-      create: { playerId: id, seasonId, appearances, points, rebounds, assists, steals, blocks },
+      update: { appearances, points, threePointers, fouls },
+      create: { playerId: id, seasonId, appearances, points, threePointers, fouls },
     });
   }
 

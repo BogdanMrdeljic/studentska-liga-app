@@ -62,10 +62,8 @@ async function main() {
           seasonId: season.id,
           appearances: Math.floor(Math.random() * 4) + 2,
           points: Math.floor(Math.random() * 20) + 5,
-          rebounds: Math.floor(Math.random() * 9) + 1,
-          assists: Math.floor(Math.random() * 8),
-          steals: Math.floor(Math.random() * 4),
-          blocks: Math.floor(Math.random() * 3),
+          threePointers: Math.floor(Math.random() * 5),
+          fouls: Math.floor(Math.random() * 4),
         },
       });
     }

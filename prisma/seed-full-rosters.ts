@@ -57,15 +57,15 @@ function randInt(min: number, max: number) {
 function statsForPosition(label: string) {
   switch (label) {
     case "Plejmejker":
-      return { points: randInt(6, 16), rebounds: randInt(1, 4), assists: randInt(4, 10), steals: randInt(2, 6), blocks: randInt(0, 1) };
+      return { points: randInt(6, 16), threePointers: randInt(1, 4), fouls: randInt(0, 3) };
     case "Bek":
-      return { points: randInt(10, 20), rebounds: randInt(2, 5), assists: randInt(2, 6), steals: randInt(1, 4), blocks: randInt(0, 2) };
+      return { points: randInt(10, 20), threePointers: randInt(2, 5), fouls: randInt(0, 3) };
     case "Krilo":
-      return { points: randInt(8, 18), rebounds: randInt(3, 7), assists: randInt(2, 5), steals: randInt(1, 4), blocks: randInt(0, 2) };
+      return { points: randInt(8, 18), threePointers: randInt(1, 4), fouls: randInt(1, 3) };
     case "Krilni centar":
-      return { points: randInt(7, 15), rebounds: randInt(5, 10), assists: randInt(1, 3), steals: randInt(0, 3), blocks: randInt(1, 4) };
+      return { points: randInt(7, 15), threePointers: randInt(0, 2), fouls: randInt(1, 4) };
     default:
-      return { points: randInt(6, 14), rebounds: randInt(7, 13), assists: randInt(0, 2), steals: randInt(0, 2), blocks: randInt(2, 6) };
+      return { points: randInt(6, 14), threePointers: randInt(0, 1), fouls: randInt(2, 5) };
   }
 }
 

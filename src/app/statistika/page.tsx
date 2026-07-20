@@ -14,10 +14,8 @@ import {
 
 const categories = [
   { key: "poeni", label: "Poeni", field: "points" },
-  { key: "skokovi", label: "Skokovi", field: "rebounds" },
-  { key: "asistencije", label: "Asistencije", field: "assists" },
-  { key: "ukradene", label: "Ukradene lopte", field: "steals" },
-  { key: "blokade", label: "Blokade", field: "blocks" },
+  { key: "trojke", label: "Trojke", field: "threePointers" },
+  { key: "faulovi", label: "Faulovi", field: "fouls" },
 ] as const;
 
 type CategoryKey = (typeof categories)[number]["key"];

@@ -117,43 +117,23 @@ export default async function EditPlayerPage({
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="rebounds">Skokovi</Label>
+                    <Label htmlFor="threePointers">Trojke</Label>
                     <Input
-                      id="rebounds"
-                      name="rebounds"
+                      id="threePointers"
+                      name="threePointers"
                       type="number"
                       min={0}
-                      defaultValue={stat?.rebounds ?? 0}
+                      defaultValue={stat?.threePointers ?? 0}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="assists">Asistencije</Label>
+                    <Label htmlFor="fouls">Faulovi</Label>
                     <Input
-                      id="assists"
-                      name="assists"
+                      id="fouls"
+                      name="fouls"
                       type="number"
                       min={0}
-                      defaultValue={stat?.assists ?? 0}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="steals">Ukradene lopte</Label>
-                    <Input
-                      id="steals"
-                      name="steals"
-                      type="number"
-                      min={0}
-                      defaultValue={stat?.steals ?? 0}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="blocks">Blokade</Label>
-                    <Input
-                      id="blocks"
-                      name="blocks"
-                      type="number"
-                      min={0}
-                      defaultValue={stat?.blocks ?? 0}
+                      defaultValue={stat?.fouls ?? 0}
                     />
                   </div>
                 </div>

@@ -16,10 +16,8 @@ type RosterTableProps = {
     number: number | null;
     stats: {
       points: number;
-      rebounds: number;
-      assists: number;
-      steals: number;
-      blocks: number;
+      threePointers: number;
+      fouls: number;
       appearances: number;
     }[];
   }[];
@@ -36,10 +34,8 @@ export function RosterTable({ players }: RosterTableProps) {
             <TableHead>Pozicija</TableHead>
             <TableHead className="text-center">Nastupi</TableHead>
             <TableHead className="text-center">Poeni</TableHead>
-            <TableHead className="text-center">Skokovi</TableHead>
-            <TableHead className="text-center">Asistencije</TableHead>
-            <TableHead className="text-center">Ukr. lopte</TableHead>
-            <TableHead className="text-center">Blokade</TableHead>
+            <TableHead className="text-center">Trojke</TableHead>
+            <TableHead className="text-center">Faulovi</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -58,10 +54,8 @@ export function RosterTable({ players }: RosterTableProps) {
                 <TableCell className="text-center font-semibold text-primary">
                   {stat?.points ?? 0}
                 </TableCell>
-                <TableCell className="text-center">{stat?.rebounds ?? 0}</TableCell>
-                <TableCell className="text-center">{stat?.assists ?? 0}</TableCell>
-                <TableCell className="text-center">{stat?.steals ?? 0}</TableCell>
-                <TableCell className="text-center">{stat?.blocks ?? 0}</TableCell>
+                <TableCell className="text-center">{stat?.threePointers ?? 0}</TableCell>
+                <TableCell className="text-center">{stat?.fouls ?? 0}</TableCell>
               </TableRow>
             );
           })}

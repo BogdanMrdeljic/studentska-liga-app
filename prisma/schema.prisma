@@ -69,17 +69,15 @@ model Player {
 }
 
 model PlayerStat {
-  id          String @id @default(cuid())
-  player      Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  playerId    String
-  season      Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
-  seasonId    String
-  appearances Int    @default(0)
-  points      Int    @default(0)
-  rebounds    Int    @default(0)
-  assists     Int    @default(0)
-  steals      Int    @default(0)
-  blocks      Int    @default(0)
+  id            String @id @default(cuid())
+  player        Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  playerId      String
+  season        Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  seasonId      String
+  appearances   Int    @default(0)
+  points        Int    @default(0)
+  threePointers Int    @default(0)
+  fouls         Int    @default(0)
 
   @@unique([playerId, seasonId])
 }
