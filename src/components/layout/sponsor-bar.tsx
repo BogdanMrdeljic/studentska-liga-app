@@ -5,7 +5,7 @@ export function SponsorBar() {
     <div className="border-b bg-secondary/60">
       <div className="mx-auto flex max-w-6xl items-center justify-center gap-3 px-4 py-2">
         <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          Generalni sponzor
+          Generalni sponzor lige
         </span>
         <div className="relative h-8 w-16 overflow-hidden rounded-md shadow-sm">
           <Image

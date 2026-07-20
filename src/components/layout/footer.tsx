@@ -17,9 +17,6 @@ export function Footer() {
               className="object-contain"
             />
           </div>
-          <span className="text-[0.65rem] uppercase tracking-widest text-muted-foreground">
-            Sponzor
-          </span>
         </div>
 
         <div className="mt-6 border-t pt-4 text-center text-sm text-muted-foreground">
@@ -27,7 +24,7 @@ export function Footer() {
             Studentska Košarkaška Liga
           </span>
           <span className="mx-2 text-border">•</span>©{new Date().getFullYear()} · Napravljeno za
-          studente, od studenata.
+          studente, od studenata. Sva prava zadržana.
         </div>
       </div>
     </footer>
