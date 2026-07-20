@@ -1,7 +1,4 @@
-const sponsors = [
-  { name: "Yettel", label: "Generalni sponzor", color: "#5C1F8C", size: "text-2xl" },
-  { name: "Triglav", label: "Sponzor", color: "#00693C", size: "text-base" },
-] as const;
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -10,20 +7,19 @@ export function Footer() {
         <p className="mb-4 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Uz podršku
         </p>
-        <div className="flex flex-wrap items-end justify-center gap-x-10 gap-y-4">
-          {sponsors.map((sponsor) => (
-            <div key={sponsor.name} className="flex flex-col items-center gap-1">
-              <span
-                className={`font-heading font-bold uppercase tracking-wide ${sponsor.size}`}
-                style={{ color: sponsor.color }}
-              >
-                {sponsor.name}
-              </span>
-              <span className="text-[0.65rem] uppercase tracking-widest text-muted-foreground">
-                {sponsor.label}
-              </span>
-            </div>
-          ))}
+        <div className="flex flex-col items-center gap-1">
+          <div className="relative h-10 w-32">
+            <Image
+              src="/sponsors/triglav.png"
+              alt="Triglav osiguranje"
+              fill
+              sizes="128px"
+              className="object-contain"
+            />
+          </div>
+          <span className="text-[0.65rem] uppercase tracking-widest text-muted-foreground">
+            Sponzor
+          </span>
         </div>
 
         <div className="mt-6 border-t pt-4 text-center text-sm text-muted-foreground">
