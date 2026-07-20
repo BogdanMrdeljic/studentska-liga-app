@@ -4,25 +4,47 @@ import { getActiveSeason } from "@/lib/standings";
 import { Button } from "@/components/ui/button";
 import { MatchCard } from "@/components/matches/match-card";
 import { PostCard } from "@/components/posts/post-card";
+import { TeamMarquee } from "@/components/home/team-marquee";
+import { StatsBand } from "@/components/home/stats-band";
 
 export default async function HomePage() {
   const season = await getActiveSeason();
 
-  const upcomingMatches = season
-    ? await prisma.match.findMany({
-        where: { seasonId: season.id, status: "SCHEDULED" },
-        orderBy: { date: "asc" },
+  const [upcomingMatches, latestPostsRaw, teams, teamCount, playerCount, finishedMatches] =
+    await Promise.all([
+      season
+        ? prisma.match.findMany({
+            where: { seasonId: season.id, status: "SCHEDULED" },
+            orderBy: { date: "asc" },
+            take: 3,
+            include: { homeTeam: true, awayTeam: true },
+          })
+        : Promise.resolve([]),
+      prisma.post.findMany({
+        orderBy: { createdAt: "desc" },
         take: 3,
-        include: { homeTeam: true, awayTeam: true },
-      })
-    : [];
-
-  const latestPostsRaw = await prisma.post.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 3,
-    include: { author: true, _count: { select: { comments: true } } },
-  });
+        include: { author: true, _count: { select: { comments: true } } },
+      }),
+      prisma.team.findMany({ orderBy: { name: "asc" } }),
+      prisma.team.count(),
+      prisma.player.count(),
+      prisma.match.findMany({
+        where: { status: "FINISHED" },
+        select: { homeScore: true, awayScore: true },
+      }),
+    ]);
   const latestPosts = latestPostsRaw.map((p) => ({ ...p, commentCount: p._count.comments }));
+
+  const totalPoints = finishedMatches.reduce(
+    (sum, m) => sum + (m.homeScore ?? 0) + (m.awayScore ?? 0),
+    0
+  );
+  const stats = [
+    { label: "Fakulteta u ligi", value: teamCount },
+    { label: "Registrovanih igrača", value: playerCount },
+    { label: "Odigranih utakmica", value: finishedMatches.length },
+    { label: "Postignutih poena", value: totalPoints },
+  ];
 
   return (
     <div>
@@ -35,7 +57,8 @@ export default async function HomePage() {
             Studentska Košarkaška Liga
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-primary-foreground/85">
-            Raspored utakmica, tabela, statistika ekipa i igrača — sve na jednom mestu.
+            Šesnaest fakulteta. Jedna lopta. Jedna titula. Prati raspored, tabelu i statistiku
+            Studentske košarkaške lige — utakmica po utakmica, koš po koš.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button
@@ -57,6 +80,10 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <TeamMarquee teams={teams} />
+
+      <StatsBand stats={stats} />
 
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="mb-4 flex items-center justify-between">
@@ -82,7 +109,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="flex items-center gap-3 font-heading text-2xl font-bold uppercase tracking-wide">
-            <span className="kicker" aria-hidden />
+            <span className="kicker bg-accent" aria-hidden />
             Poslednje objave
           </h2>
           <Link href="/objave" className="text-sm font-medium text-primary hover:underline">
