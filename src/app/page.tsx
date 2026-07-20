@@ -47,8 +47,8 @@ export default async function HomePage() {
             Studentska Košarkaška Liga
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-primary-foreground/85">
-            Šesnaest fakulteta. Jedna lopta. Jedna titula. Prati raspored, tabelu i statistiku
-            Studentske košarkaške lige — utakmica po utakmica, koš po koš.
+            Šesnaest fakulteta. Jedna titula. Pratite raspored, tabelu i statistiku
+            Studentske košarkaške lige Univerziteta u Beogradu!
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button
