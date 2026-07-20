@@ -23,7 +23,7 @@ export function HeroLogos({ teams }: { teams: Team[] }) {
         return (
           <div
             key={team.id}
-            className="absolute opacity-30 brightness-[1.8] grayscale"
+            className="absolute opacity-50 brightness-[1.4] grayscale"
             style={{
               top: spot.top,
               left: spot.left,
