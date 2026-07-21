@@ -39,3 +39,4 @@ npx prisma generate
 ```
 
 Sajt je zatim dostupan na [http://localhost:3000](http://localhost:3000).
+
