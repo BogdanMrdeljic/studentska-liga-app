@@ -26,6 +26,15 @@ export function Footer() {
               className="object-contain"
             />
           </div>
+          <div className="relative h-10 w-14">
+            <Image
+              src="/sponsors/ardusport.jpg"
+              alt="ArduSport"
+              fill
+              sizes="56px"
+              className="object-contain"
+            />
+          </div>
         </div>
 
         <div className="mt-6 border-t pt-4 text-center text-sm text-muted-foreground">
