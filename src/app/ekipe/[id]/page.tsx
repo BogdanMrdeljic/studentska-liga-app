@@ -59,7 +59,7 @@ export default async function TeamDetailPage({
 
       <div className="mx-auto max-w-4xl px-4 py-10">
         <h2 className="mb-3 font-heading text-xl font-semibold uppercase tracking-wide">
-          Rošter i statistika
+          Roster i statistika
         </h2>
         {playersWithStats.length === 0 ? (
           <p className="text-muted-foreground">Nema registrovanih igrača.</p>
