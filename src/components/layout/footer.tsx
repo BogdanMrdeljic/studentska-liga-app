@@ -35,15 +35,6 @@ export function Footer() {
               className="object-contain"
             />
           </div>
-          <div className="relative h-10 w-10">
-            <Image
-              src="/sponsors/aquaviva.png"
-              alt="Aqua Viva"
-              fill
-              sizes="40px"
-              className="object-contain"
-            />
-          </div>
         </div>
 
         <div className="mt-6 border-t pt-4 text-center text-sm text-muted-foreground">
